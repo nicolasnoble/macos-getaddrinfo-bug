@@ -1,0 +1,18 @@
+name: Linux
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Compile C-based resolver test
+      run: |
+        gcc -o getaddrinfo -O2 getaddrinfo.c
+    - name: Run C-based resolver test
+      run: |
+        ./getaddrinfo
