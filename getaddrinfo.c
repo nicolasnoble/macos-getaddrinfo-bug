@@ -39,7 +39,7 @@ static int test_getaddrinfo(char *hostname, int type) {
         strcpy(ip, "???");
         break;
     }
-    printf("%s\n", ip);
+    fprintf(stderr, "%s\n", ip);
   }
 
   freeaddrinfo(result);
@@ -47,17 +47,17 @@ static int test_getaddrinfo(char *hostname, int type) {
 }
 
 int main() {
-  printf("Testing IPv6 only with AF_UNSPEC\n");
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC\n");
   test_getaddrinfo("loopback6.unittest.grpc.io", AF_UNSPEC);
-  printf("Testing IPv6 only with AF_INET\n");
+  fprintf(stderr, "Testing IPv6 only with AF_INET\n");
   test_getaddrinfo("loopback6.unittest.grpc.io", AF_INET);
-  printf("Testing IPv6 only with AF_INET6\n");
+  fprintf(stderr, "Testing IPv6 only with AF_INET6\n");
   test_getaddrinfo("loopback6.unittest.grpc.io", AF_INET6);
-  printf("Testing IPv4/6 with AF_UNSPEC\n");
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC\n");
   test_getaddrinfo("loopback46.unittest.grpc.io", AF_UNSPEC);
-  printf("Testing IPv4/6 with AF_INET\n");
+  fprintf(stderr, "Testing IPv4/6 with AF_INET\n");
   test_getaddrinfo("loopback46.unittest.grpc.io", AF_INET);
-  printf("Testing IPv4/6 with AF_INET6\n");
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6\n");
   test_getaddrinfo("loopback46.unittest.grpc.io", AF_INET6);
   return 0;
 }
