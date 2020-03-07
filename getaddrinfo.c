@@ -6,16 +6,17 @@
 #include <string.h>
 #include <sys/socket.h>
 
-static int test_getaddrinfo(char *hostname, int type) {
+static int test_getaddrinfo(char *hostname, int havehints, int family, int flags) {
   struct addrinfo hints;
   struct addrinfo *result;
   struct addrinfo *res;
   int error;
 
   memset(&hints, 0, sizeof(struct addrinfo));
-  hints.ai_family = type;
+  hints.ai_family = family;
+  hints.ai_flags = flags;
   /* resolve the domain name into a list of addresses */
-  error = getaddrinfo(hostname, NULL, &hints, &result);
+  error = getaddrinfo(hostname, NULL, havehints ? &hints : NULL, &result);
   if (error != 0) {
     if (error == EAI_SYSTEM) {
       perror("getaddrinfo");
@@ -47,17 +48,122 @@ static int test_getaddrinfo(char *hostname, int type) {
 }
 
 int main() {
-  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC\n");
-  test_getaddrinfo("loopback6.unittest.grpc.io", AF_UNSPEC);
-  fprintf(stderr, "Testing IPv6 only with AF_INET\n");
-  test_getaddrinfo("loopback6.unittest.grpc.io", AF_INET);
-  fprintf(stderr, "Testing IPv6 only with AF_INET6\n");
-  test_getaddrinfo("loopback6.unittest.grpc.io", AF_INET6);
-  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC\n");
-  test_getaddrinfo("loopback46.unittest.grpc.io", AF_UNSPEC);
-  fprintf(stderr, "Testing IPv4/6 with AF_INET\n");
-  test_getaddrinfo("loopback46.unittest.grpc.io", AF_INET);
-  fprintf(stderr, "Testing IPv4/6 with AF_INET6\n");
-  test_getaddrinfo("loopback46.unittest.grpc.io", AF_INET6);
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with no hints:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 0, AF_UNSPEC, 0);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with no hints:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 0, AF_INET, 0);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with no hints:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 0, AF_INET6, 0);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with no hints:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 0, AF_UNSPEC, 0);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with no hints:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 0, AF_INET, 0);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with no hints:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 0, AF_INET6, 0);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and default flags:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, 0);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and default flags:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, 0);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and default flags:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, 0);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and default flags:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, 0);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and default flags:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, 0);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and default flags:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, 0);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_ALL:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_ALL);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_ALL:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_ALL);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_ALL:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_ALL);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_ALL:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_ALL);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_ALL:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_ALL);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_ALL:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_ALL);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_V4MAPPED);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_ALL | AI_V4MAPPED);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG flags:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG flags:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG flags:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG flags:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG flags:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG | AI_ALL);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG | AI_ALL);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG | AI_ALL);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG | AI_ALL);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG | AI_ALL);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG | AI_ALL);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG | AI_V4MAPPED);
+
+  fprintf(stderr, "Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback6.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_UNSPEC, AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET, AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED);
+  fprintf(stderr, "Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:\n");
+  test_getaddrinfo("loopback46.unittest.grpc.io", 1, AF_INET6, AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED);
+
   return 0;
 }
