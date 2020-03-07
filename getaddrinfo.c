@@ -1,22 +1,64 @@
+#ifdef _WIN32
+
+#pragma comment (lib, "Ws2_32.lib")
+#define WINVER 0x0A00
+#define _WIN32_WINNT 0x0A00
+#undef UNICODE
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <winsock2.h>
+#include <windows.h>
+
+#else
+
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
+
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
 
 static int test_getaddrinfo(char *hostname, int havehints, int family, int flags) {
+#ifdef _WIN32
+  const unsigned size = sizeof(ADDRINFOA);
+  ADDRINFOA hints;
+  PADDRINFOA result;
+  PADDRINFOA res;
+
+  WSADATA wsaData;
+  int status = WSAStartup(MAKEWORD(2, 0), &wsaData);
+
+  if (status != 0) return 1;
+#else
+  const unsigned size = sizeof(struct addrinfo);
   struct addrinfo hints;
   struct addrinfo *result;
   struct addrinfo *res;
+#endif
   int error;
 
-  memset(&hints, 0, sizeof(struct addrinfo));
+  memset(&hints, 0, size);
   hints.ai_family = family;
   hints.ai_flags = flags;
   /* resolve the domain name into a list of addresses */
   error = getaddrinfo(hostname, NULL, havehints ? &hints : NULL, &result);
+#ifdef _WIN32
+  if (error != 0) {
+    LPTSTR message;
+    DWORD status = FormatMessageA(
+      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
+          FORMAT_MESSAGE_IGNORE_INSERTS,
+      NULL, (DWORD)WSAGetLastError(), MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
+      (LPTSTR)(&message), 0, NULL);
+      fprintf(stderr, "error in getaddrinfo: %s\n", message);
+      LocalFree(message);
+    }
+#else
   if (error != 0) {
     if (error == EAI_SYSTEM) {
       perror("getaddrinfo");
@@ -25,6 +67,7 @@ static int test_getaddrinfo(char *hostname, int havehints, int family, int flags
     }
     return 0;
   }
+#endif
 
   /* loop over all returned results and print them */
   for (res = result; res != NULL; res = res->ai_next) {
