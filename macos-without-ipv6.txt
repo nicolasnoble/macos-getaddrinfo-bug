@@ -1,0 +1,147 @@
+Testing IPv6 only with AF_UNSPEC, with no hints:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET, with no hints:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with no hints:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv4/6 with AF_UNSPEC, with no hints:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with no hints:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with no hints:
+127.0.0.1
+127.0.0.1
+Testing IPv6 only with AF_UNSPEC, with hints and default flags:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET, with hints and default flags:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and default flags:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv4/6 with AF_UNSPEC, with hints and default flags:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and default flags:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and default flags:
+::ffff:127.0.0.1
+::ffff:127.0.0.1
+Testing IPv6 only with AF_UNSPEC, with hints and AI_ALL:
+::1
+::1
+Testing IPv6 only with AF_INET, with hints and AI_ALL:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_ALL:
+::1
+::1
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_ALL:
+::1
+::1
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_ALL:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_ALL:
+::1
+::1
+Testing IPv6 only with AF_UNSPEC, with hints and AI_V4MAPPED:
+::1
+::1
+Testing IPv6 only with AF_INET, with hints and AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_V4MAPPED:
+::1
+::1
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_V4MAPPED:
+::1
+::1
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_V4MAPPED:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_V4MAPPED:
+::1
+::1
+Testing IPv6 only with AF_UNSPEC, with hints and AI_ALL | AI_V4MAPPED:
+::1
+::1
+Testing IPv6 only with AF_INET, with hints and AI_ALL | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_ALL | AI_V4MAPPED:
+::1
+::1
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_ALL | AI_V4MAPPED:
+::1
+::1
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_ALL | AI_V4MAPPED:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_ALL | AI_V4MAPPED:
+::1
+::1
+::ffff:127.0.0.1
+::ffff:127.0.0.1
+Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG flags:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG flags:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG flags:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG flags:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG flags:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_V4MAPPED:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG | AI_V4MAPPED:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG | AI_V4MAPPED:
+::ffff:127.0.0.1
+::ffff:127.0.0.1
+Testing IPv6 only with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv6 only with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:
+error in getaddrinfo: nodename nor servname provided, or not known
+Testing IPv4/6 with AF_UNSPEC, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:
+127.0.0.1
+127.0.0.1
+Testing IPv4/6 with AF_INET6, with hints and AI_ADDRCONFIG | AI_ALL | AI_V4MAPPED:
+::ffff:127.0.0.1
+::ffff:127.0.0.1
